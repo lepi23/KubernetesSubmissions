@@ -1,3 +1,3 @@
 ## Log output app
 
-Delpoy with `kubectl apply -a manifests`
+Deploy with `kubectl apply -a manifests`

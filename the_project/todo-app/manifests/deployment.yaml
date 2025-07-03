@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: todo-app
-        image: your_dockerhub_lepi23/todo_app:latest
+        image: lepi23/todo_app:latest
         ports:
         - containerPort: 3000
         env:
@@ -34,4 +34,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
-      nodePort: 30080  # Access on http://<minikube_ip>:30080 if using Minikube
+      nodePort: 30080  

@@ -10,6 +10,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: log-output-service   # Your Kubernetes service name for this app
+            name: log-output-svc   # Your Kubernetes service name for this app
             port:
               number: 80

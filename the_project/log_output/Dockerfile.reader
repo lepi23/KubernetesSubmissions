@@ -1,0 +1,6 @@
+# the_project/log_output/Dockerfile.reader
+FROM node:18
+WORKDIR /app
+COPY log-reader.js .
+RUN npm install express
+CMD ["node", "log-reader.js"]

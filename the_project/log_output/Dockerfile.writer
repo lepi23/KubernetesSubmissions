@@ -1,0 +1,13 @@
+# the_project/log_output/Dockerfile.writer
+FROM node:18
+
+WORKDIR /app
+
+# Copy dependency files first
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Then copy the script
+COPY log-writer.js .
+
+CMD ["node", "log-writer.js"]

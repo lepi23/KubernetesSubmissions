@@ -1,3 +1,4 @@
+# the_project/log_output/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,8 +13,19 @@ spec:
       labels:
         app: log-output
     spec:
+      volumes:
+        - name: shared-logs
+          emptyDir: {}
       containers:
-        - name: log-output
-          image: lepi23/log-output-app
+        - name: log-writer
+          image: lepi23/log-writer
+          volumeMounts:
+            - name: shared-logs
+              mountPath: /shared
+        - name: log-reader
+          image: lepi23/log-reader
           ports:
-            - containerPort: 3000 
+            - containerPort: 3000
+          volumeMounts:
+            - name: shared-logs
+              mountPath: /shared

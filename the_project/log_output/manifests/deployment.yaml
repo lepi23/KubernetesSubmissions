@@ -15,7 +15,8 @@ spec:
     spec:
       volumes:
         - name: shared-logs
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: log-claim
       containers:
         - name: log-writer
           image: lepi23/log-writer

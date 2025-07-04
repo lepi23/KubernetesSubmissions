@@ -5,14 +5,14 @@ const path = require('path');
 
 const app = express();
 const LOG_FILE = '/shared/log.txt';
+const COUNTER_FILE = '/shared/pingpong-count.txt';
 
 app.get('/logoutput', (req, res) => {
-  if (fs.existsSync(LOG_FILE)) {
-    const content = fs.readFileSync(LOG_FILE, 'utf-8');
-    res.type('text/plain').send(content);
-  } else {
-    res.status(404).send('Log file not found.');
-  }
+  let log = fs.existsSync(LOG_FILE) ? fs.readFileSync(LOG_FILE, 'utf-8') : '';
+  let count = fs.existsSync(COUNTER_FILE) ? fs.readFileSync(COUNTER_FILE, 'utf-8') : '0';
+
+  log += `\nPing / Pongs: ${count}`;
+  res.type('text/plain').send(log);
 });
 
 app.listen(3000, () => {

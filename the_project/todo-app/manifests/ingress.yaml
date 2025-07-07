@@ -10,13 +10,13 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: todo-app-svc   # Your Kubernetes service name for this app
+            name: todo-backend-svc  # Your Kubernetes service name for this app
             port:
               number: 1234
       - path: /image
         pathType: Prefix
         backend:
           service:
-            name: todo-app-svc
+            name: todo-backend-svc
             port:
               number: 1234

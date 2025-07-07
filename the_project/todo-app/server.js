@@ -58,6 +58,13 @@ app.get('/image', async (req, res) => {
   }
 });
 
+app.post('/todos', express.json(), (req, res) => {
+  const { todo } = req.body;
+  // TODO: save to your backend or in-memory array
+  res.json({ todo });
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server started in port ${PORT}`);
 });

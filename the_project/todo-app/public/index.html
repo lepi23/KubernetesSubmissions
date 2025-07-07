@@ -1,18 +1,60 @@
 <!-- the_project/todo_app/public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Todo App</title>
-  </head>
-  <body>
-    <h1>Welcome to the Todo App!</h1>
-    <p>This is a ToDo app.</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { text-align: center; }
+    #todo-form { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    #todo-input { flex: 1; padding: 0.5rem; font-size: 1rem; }
+    #todo-button { padding: 0.5rem 1rem; font-size: 1rem; }
+    #todo-list { list-style: none; padding: 0; }
+    #todo-list li { padding: 0.5rem; border-bottom: 1px solid #ddd; }
+    #error-msg { color: red; font-size: 0.9.em; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Todo App!</h1>
+  <div>
+    <img id="hourly-img" src="/image" alt="Hourly random from Picsum" style="max-width:100%; height:auto"/>
+  </div>
+  <form id="todo-form">
+    <input id="todo-input" type="text" maxlength="140" placeholder="Enter a new todo (max 140 chars)" required />
+    <button id="todo-button" type="submit">Create todo</button>
+  </form>
+  <div id="error-msg"></div>
 
-    <!-- NEW: show the cached hourly image -->
-    <div>
-      <h2>Hourly Random Image</h2>
-      <img id="hourly-img" src="/image" alt="Hourly random from Picsum" style="max-width:100%;height:auto"/>
-    </div>
-  </body>
+  <h2>Existing Todos</h2>
+  <ul id="todo-list">
+    <li>Learn Kubernetes basics</li>
+    <li>Implement caching for images</li>
+    <li>Write unit tests for API</li>
+  </ul>
+
+  <script>
+    const form = document.getElementById('todo-form');
+    const input = document.getElementById('todo-input');
+    const list = document.getElementById('todo-list');
+    const errorMsg = document.getElementById('error-msg');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const value = input.value.trim();
+      if (!value) return;
+      if (value.length > 140) {
+        errorMsg.textContent = 'Todo must be 140 characters or less.';
+        return;
+      }
+      errorMsg.textContent = '';
+      // For now, just add to the list locally
+      const li = document.createElement('li');
+      li.textContent = value;
+      list.appendChild(li);
+      input.value = '';
+    });
+  </script>
+</body>
 </html>

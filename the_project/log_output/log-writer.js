@@ -1,27 +1,23 @@
 // log-writer.js
-const fs = require('fs');
-const path = require('path');
+const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 
-const SHARED_DIR = '/shared';
-const LOG_FILE = path.join(SHARED_DIR, 'log.txt');
+const app = express();
+let latestLog = '';
 
-// Ensure the shared directory exists
-if (!fs.existsSync(SHARED_DIR)) {
-  fs.mkdirSync(SHARED_DIR, { recursive: true });
-}
-
-const randomStringWithTimestamp = () => {
+const generateLog = () => {
   const timestamp = new Date().toISOString();
-  return `${timestamp}: ${uuidv4()}\n`;
+  latestLog = `${timestamp}: ${uuidv4()}`;
+  console.log(`Generated log: ${latestLog}`);
 };
 
-const writeLog = () => {
-  const randomString = randomStringWithTimestamp();
-  // Overwrite the file instead of appending
-  fs.writeFileSync(LOG_FILE, randomString);
-  console.log(`Wrote: ${randomString.trim()}`);
-};
+setInterval(generateLog, 5000);
+generateLog(); // Initial log
 
-setInterval(writeLog, 5000);
-writeLog(); // Initial write
+app.get('/log', (req, res) => {
+  res.type('text/plain').send(latestLog);
+});
+
+app.listen(4000, () => {
+  console.log('Log writer running on port 4000');
+});

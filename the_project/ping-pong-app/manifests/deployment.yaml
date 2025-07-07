@@ -22,6 +22,3 @@ spec:
           image: lepi23/ping-pong-app  # or your Docker Hub tag
           ports:
             - containerPort: 3000
-          volumeMounts:
-            - name: shared-logs
-              mountPath: /shared

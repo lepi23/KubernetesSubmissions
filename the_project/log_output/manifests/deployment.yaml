@@ -20,13 +20,9 @@ spec:
       containers:
         - name: log-writer
           image: lepi23/log-writer
-          volumeMounts:
-            - name: shared-logs
-              mountPath: /shared
+          ports:
+            - containerPort: 4000
         - name: log-reader
           image: lepi23/log-reader
           ports:
             - containerPort: 3000
-          volumeMounts:
-            - name: shared-logs
-              mountPath: /shared

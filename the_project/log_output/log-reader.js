@@ -1,18 +1,29 @@
-// the_project/log_output/log-reader.js
+// log-reader.js
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const http = require('http');
 
 const app = express();
-const LOG_FILE = '/shared/log.txt';
-const COUNTER_FILE = '/shared/pingpong-count.txt';
+const LOG_URL = 'http://localhost:4000/log';
+const PINGPONG_URL = 'http://ping-pong-svc/pingpong';
 
 app.get('/logoutput', (req, res) => {
-  let log = fs.existsSync(LOG_FILE) ? fs.readFileSync(LOG_FILE, 'utf-8') : '';
-  let count = fs.existsSync(COUNTER_FILE) ? fs.readFileSync(COUNTER_FILE, 'utf-8') : '0';
-
-  log += `\nPing / Pongs: ${count}`;
-  res.type('text/plain').send(log);
+  http.get(LOG_URL, logRes => {
+    let logData = '';
+    logRes.on('data', chunk => logData += chunk);
+    logRes.on('end', () => {
+      http.get(PINGPONG_URL, pongRes => {
+        let pongData = '';
+        pongRes.on('data', chunk => pongData += chunk);
+        pongRes.on('end', () => {
+          res.type('text/plain').send(`${logData}\nPing / Pongs: ${pongData}`);
+        });
+      }).on('error', err => {
+        res.type('text/plain').send(`${logData}\nPing / Pongs: ERROR (${err.message})`);
+      });
+    });
+  }).on('error', err => {
+    res.type('text/plain').send(`ERROR getting log: ${err.message}`);
+  });
 });
 
 app.listen(3000, () => {

@@ -14,3 +14,5 @@
 - [1.8.](https://github.com/lepi23/KubernetesSubmissions/tree/1.8/the_project)
 - [1.9.](https://github.com/lepi23/KubernetesSubmissions/tree/1.9/the_project)
 - [1.10.](https://github.com/lepi23/KubernetesSubmissions/tree/1.10/the_project)
+- [1.11.](https://github.com/lepi23/KubernetesSubmissions/tree/1.11/the_project)
+- [1.12.](https://github.com/lepi23/KubernetesSubmissions/tree/1.12/the_project)

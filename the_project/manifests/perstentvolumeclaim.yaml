@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: log-claim
+spec:
+  storageClassName: shared-pv # this is the name of the persistent volume we are claiming
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

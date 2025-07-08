@@ -18,7 +18,7 @@ spec:
             claimName: log-claim    # reuse the same PVC
       containers:
       - name: todo-app
-        image: lepi23/todo_app:latest
+        image: lepi23/todo-app:latest
         volumeMounts:
           - name: shared-logs
             mountPath: /shared

@@ -1,4 +1,4 @@
-<!-- the_project/todo_app/public/index.html -->
+<!-- the_project/todo-app/public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,14 +13,16 @@
     #todo-button { padding: 0.5rem 1rem; font-size: 1rem; }
     #todo-list { list-style: none; padding: 0; }
     #todo-list li { padding: 0.5rem; border-bottom: 1px solid #ddd; }
-    #error-msg { color: red; font-size: 0.9.em; margin-top: 0.5rem; }
+    #error-msg { color: red; font-size: 0.9em; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
   <h1>Welcome to the Todo App!</h1>
+
   <div>
     <img id="hourly-img" src="/image" alt="Hourly random from Picsum" style="max-width:100%; height:auto"/>
   </div>
+
   <form id="todo-form">
     <input id="todo-input" type="text" maxlength="140" placeholder="Enter a new todo (max 140 chars)" required />
     <button id="todo-button" type="submit">Create todo</button>
@@ -28,32 +30,57 @@
   <div id="error-msg"></div>
 
   <h2>Existing Todos</h2>
-  <ul id="todo-list">
-    <li>Learn Kubernetes basics</li>
-    <li>Implement caching for images</li>
-    <li>Write unit tests for API</li>
-  </ul>
+  <ul id="todo-list"></ul>
 
   <script>
-    const form = document.getElementById('todo-form');
-    const input = document.getElementById('todo-input');
-    const list = document.getElementById('todo-list');
-    const errorMsg = document.getElementById('error-msg');
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const value = input.value.trim();
-      if (!value) return;
-      if (value.length > 140) {
-        errorMsg.textContent = 'Todo must be 140 characters or less.';
-        return;
-      }
-      errorMsg.textContent = '';
-      // For now, just add to the list locally
-      const li = document.createElement('li');
-      li.textContent = value;
-      list.appendChild(li);
-      input.value = '';
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('todo-form');
+      const input = document.getElementById('todo-input');
+      const list = document.getElementById('todo-list');
+      const errorMsg = document.getElementById('error-msg');
+  
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const value = input.value.trim();
+        if (!value) return;
+        if (value.length > 140) {
+          errorMsg.textContent = 'Todo must be 140 characters or less.';
+          return;
+        }
+        errorMsg.textContent = '';
+  
+        // Send the new todo to the backend
+        try {
+          const res = await fetch('/todos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: value })
+          });
+          if (!res.ok) throw new Error('Server error');
+          const todo = await res.json();
+          const li = document.createElement('li');
+          li.textContent = todo.text;
+          list.appendChild(li);
+          input.value = '';
+        } catch (err) {
+          errorMsg.textContent = 'Failed to save todo.';
+        }
+      });
+  
+      // Load existing todos from todo-app's backend
+      fetch('/todos')
+        .then(res => res.json())
+        .then(todos => {
+          todos.forEach(todo => {
+            const li = document.createElement('li');
+            li.textContent = todo.text;
+            list.appendChild(li);
+          });
+        })
+        .catch(err => {
+          errorMsg.textContent = 'Could not load todos. Backend might be unavailable.';
+          console.error('Error fetching todos:', err);
+        });
     });
   </script>
 </body>

@@ -1,4 +1,4 @@
-# the_project/todo_app/Dockerfile
+# the_project/todo-app/Dockerfile
 FROM node:18-alpine
 
 WORKDIR /app
